@@ -7,12 +7,6 @@
 #include <stdlib.h>
 
 
-/* PROTOTYPE DECLARATION */
-
-void print_array(const int *array, size_t size);
-void print_list(const listint_t *list);
-
-
 /* TYPE DEFINITION */
 
 /**
@@ -28,5 +22,13 @@ typedef struct listint_s
     struct listint_s *prev;
     struct listint_s *next;
 } listint_t;
+
+
+
+/* PROTOTYPE DECLARATION */
+
+void print_array(const int *array, size_t size);
+void print_list(const listint_t *list);
+void bubble_sort(int *array, size_t size);
 
 #endif /* SORT_H */
