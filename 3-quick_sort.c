@@ -1,78 +1,71 @@
 #include "sort.h"
-#include <stddef.h>
 
 /**
- * swap - Swaps two elements in an array and prints the array
- * @array: The array to be modified
- * @item1: Index of the first element to be swapped
- * @item2: Index of the second element to be swapped
+ * f_swap - Function that swaps two values
+ *
+ * @first: First value
+ * @second: Second value
  */
-void swap(int *array, size_t item1, size_t item2)
+void f_swap(int *first, int *second)
 {
-    if (array[item1] != array[item2])
-    {
-        int tmp = array[item1];
-        array[item1] = array[item2];
-        array[item2] = tmp;
-        print_array(array, item2 + 1);  // Print array after each swap
-    }
+	int i;
+
+	i = *second;
+	*second = *first;
+	*first = i;
+}
+
+
+/**
+ * f_quick - the sorting algorithm
+ *
+ * @array: array to be sorted
+ * @left_s: left side of the array
+ * @right_s: right side of the array
+ * @size: size of the array
+ */
+void f_quick(int *array, int left_s, int right_s, size_t size)
+{
+	int *m_pivot;
+	int i = left_s - 1, j;
+
+	if (left_s >= right_s)
+		return;
+
+	m_pivot = array + right_s;
+
+	for (j = left_s; j < right_s; j++)
+	{
+		if (array[j] < *m_pivot)
+		{
+			i++;
+			if (i < j)
+			{
+				f_swap(array + j, array + i);
+				print_array(array, size);
+			}
+		}
+	}
+	if (array[i + 1] > *m_pivot)
+	{
+		f_swap(array + i + 1, m_pivot);
+		print_array(array, size);
+	}
+	f_quick(array, left_s, i, size);
+	f_quick(array, i + 2, right_s, size);
 }
 
 /**
- * lomuto_partition - Implements Lomuto partition scheme
- * @array: The array to be partitioned
- * @first: Index of the first element of the partition
- * @last: Index of the last element of the partition
- * @size: Size of the array
- * Return: Index of the pivot element
+ * quick_sort - sorts an array of data using quicksort algorithms
+ *
+ * @array: array to be sorted
+ * @size: size of the array to be sorted
  */
-size_t lomuto_partition(int *array, ssize_t first, ssize_t last, size_t size)
-{
-    int pivot = array[last];
-    ssize_t current = first, finder;
 
-    for (finder = first; finder < last; finder++)
-    {
-        if (array[finder] < pivot)
-        {
-            swap(array, current, finder);
-            current++;
-        }
-    }
-
-    swap(array, current, last);
-
-    return (current);
-}
-
-/**
- * quick_sort_recursive - Recursively sorts the array using QuickSort
- * @array: The array to be sorted
- * @first: Index of the first element of the partition
- * @last: Index of the last element of the partition
- * @size: Size of the array
- */
-void quick_sort_recursive(int *array, ssize_t first, ssize_t last, size_t size)
-{
-    if (first < last)
-    {
-        size_t position = lomuto_partition(array, first, last, size);
-
-        quick_sort_recursive(array, first, position - 1, size);
-        quick_sort_recursive(array, position + 1, last, size);
-    }
-}
-
-/**
- * quick_sort - Sorts an array of integers in ascending order using QuickSort
- * @array: The array to be sorted
- * @size: Size of the array
- */
 void quick_sort(int *array, size_t size)
 {
-    if (array == NULL || size < 2)
-        return;
+	if (array == NULL || size < 2)
+		return;
 
-    quick_sort_recursive(array, 0, size - 1, size);
+	f_quick(array, 0, size - 1, size);
 }
-
